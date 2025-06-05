@@ -9,13 +9,10 @@ import com.example.LibrarySystem.mapper.BookMapper;
 import com.example.LibrarySystem.repository.AuthorRepository;
 import com.example.LibrarySystem.repository.BookRepository;
 import com.example.LibrarySystem.services.BookService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,53 +30,56 @@ public class BookController {
     @Autowired
     private AuthorRepository authorRepository;
 
-//    @GetMapping("/test")
-//    public String test() {
-//        return "Spring Boot is running!";
-//    }
 
-//    @GetMapping("/test/database")
-//    public Map<String, Object> testDatabase() {
-//        Map<String, Object> result = new HashMap<>();
-//        result.put("message", "Database connection successful!");
-//        result.put("book_count", bookRepository.count());
-//        return result;
-//    }
+    /**
+     * GET /books/details
+     * Returnerar en fullständig lista över alla böcker med detaljerad författarinformation.
+     */
+    @GetMapping("/details")
+    public ResponseEntity<List<BookWithDetailsDTO>> getAllBookWithDetails() {
+        List<Book> books = bookService.getAllBooks();
+        List<BookWithDetailsDTO> bookWithDetailsDTOList = books.stream()
+                .map(BookMapper::toDetailedDTO)
+                .toList();
+        return ResponseEntity.ok(bookWithDetailsDTOList);
+    }
 
-//    @GetMapping
-//    public List<Book>getBooks(){
-//        return bookService.getAllBooks();
-//    }
-
+    /**
+     * GET /books/search
+     * Söker efter böcker baserat på exakt titelmatchning.
+     * Returnerar en lista med böcker som matchar titeln.
+     */
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> findBookByTitle(@RequestParam String title){
+    public ResponseEntity<List<Book>> findBookByTitle(@RequestParam String title) {
         List<Book> books = bookService.getBookByTitle(title);
-        if (!books.isEmpty()){
+        if (!books.isEmpty()) {
             return ResponseEntity.ok(books);
-        }else {
+        } else {
             return ResponseEntity.notFound().build();
         }
-
     }
+
+    /**
+     * POST /books
+     * Skapar en ny bok baserat på inkommande BookRequest DTO.
+     * Författaren hämtas via authorId.
+     */
     @PostMapping
     public ResponseEntity<BookDTO> createBook(@RequestBody BookRequest request) {
         Author author = authorRepository.findById(request.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found"));
 
         Book book = BookMapper.fromRequest(request, author);
-        Book savedBook = bookRepository.save(book);
+        Book savedBook = bookService.saveBook(book);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(BookMapper.toDTO(savedBook));
     }
-//
-//    @GetMapping
-//    public ResponseEntity<List<BookWithDetailsDTO>>getAllBookWithDetails(){
-//        List<Book> books = bookService.getAllBooks();
-//        List<BookWithDetailsDTO> bookWithDetailsDTOList = books.stream()
-//                .map(BookMapper::toDetailedDTO).toList();
-//        return ResponseEntity.ok(bookWithDetailsDTOList);
-//    }
 
+    /**
+     * GET /books
+     * Returnerar en paginerad lista med böcker.
+     * Stöd för valfria filter (titel, tillgänglighet) och sortering.
+     */
     @GetMapping
     public ResponseEntity<Page<Book>> getBooks(
             @RequestParam(required = false) String title,
@@ -94,7 +94,7 @@ public class BookController {
         if (title != null || available != null) {
             result = bookService.getFilteredBooks(title, available, pageable);
         } else {
-            result = bookService.getAllBooks(pageable);
+            result = bookService.getAllBooksWithoutFilter(pageable);
         }
 
         return ResponseEntity.ok(result);

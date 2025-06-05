@@ -24,4 +24,9 @@ public class AuthorService {
     public Author saveAuthor(Author author){
         return authorRepository.save(author);
     }
+
+
+    public List<Object[]> findAuthorsWithMultipleBooksAndTitles() {
+        return authorRepository.findAuthorsWithMultipleBooksAndTitles();
+    }
 }

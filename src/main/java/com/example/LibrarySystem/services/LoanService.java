@@ -27,9 +27,6 @@ public class LoanService {
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
 
-        // Sätt datum
-        loan.setBorrowedDate(LocalDateTime.now());
-        loan.setDueDate(LocalDateTime.now().plusDays(14));  // t.ex. 2 veckor lån
 
         return loanRepository.save(loan);
     }

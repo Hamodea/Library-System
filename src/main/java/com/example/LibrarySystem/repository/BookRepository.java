@@ -17,14 +17,16 @@ public interface BookRepository extends JpaRepository <Book, Long> {
     public List<Book> findByTitle(String title);
 
 
-    @Query("SELECT b FROM Book b WHERE " +
-            "(:title IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
-            "(:availableOnly = false OR b.availableCopies > 0)")
+    @Query("""
+            SELECT b FROM Book b
+            WHERE (:title IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')))
+              AND (:available IS NULL OR b.availableCopies > 0)
+            """)
     Page<Book> findFilteredBooks(@Param("title") String title,
-                                 @Param("availableOnly") boolean availableOnly,
+                                 @Param("available") Boolean available,
                                  Pageable pageable);
+
+
 }
-
-
 
 

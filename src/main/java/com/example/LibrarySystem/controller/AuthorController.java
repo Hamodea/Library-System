@@ -1,5 +1,6 @@
 package com.example.LibrarySystem.controller;
 
+import com.example.LibrarySystem.dto.AuthorBookDTO;
 import com.example.LibrarySystem.dto.AuthorRequest;
 import com.example.LibrarySystem.entity.Author;
 import com.example.LibrarySystem.services.AuthorService;
@@ -17,14 +18,18 @@ public class AuthorController {
     private AuthorService authorService;
 
     @GetMapping
-    public List<Author>getAll(){
-        return authorService.getAllAuthor();
+    public ResponseEntity<List<Author>> getAll() {
+        List<Author> authors = authorService.getAllAuthor();
+        return ResponseEntity.ok(authors); // 200 OK, även om listan är tom
     }
 
+
     @GetMapping("/name")
-    public List<Author>findAuthorByName(@RequestParam String lastName){
-        return authorService.getAuthorByLastName(lastName);
+    public ResponseEntity<List<Author>> findAuthorByName(@RequestParam String lastName) {
+        List<Author> authors = authorService.getAuthorByLastName(lastName);
+        return ResponseEntity.ok(authors);
     }
+
 
     @PostMapping
     public ResponseEntity<Author>createAuthor(@RequestBody AuthorRequest authorRequest){
@@ -38,4 +43,20 @@ public class AuthorController {
         return ResponseEntity.status(201).body(saved);
 
     }
+
+    @GetMapping("/multi-book")
+    public ResponseEntity<List<AuthorBookDTO>> getAuthorsWithMultipleBooksAndTitles() {
+        List<Object[]> rows = authorService.findAuthorsWithMultipleBooksAndTitles();
+
+        List<AuthorBookDTO> dtos = rows.stream()
+                .map(row -> new AuthorBookDTO(
+                        (String) row[0],
+                        (String) row[1]
+                ))
+                .toList();
+
+        return ResponseEntity.ok(dtos);
+    }
+
+
 }

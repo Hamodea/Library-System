@@ -3,11 +3,11 @@ package com.example.LibrarySystem.dto;
 import java.time.LocalDateTime;
 
 public class UserDTO {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private LocalDateTime registrationDate;
+    private final Long id;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final LocalDateTime registrationDate;
 
     public UserDTO(Long id, String firstName, String lastName, String email, LocalDateTime registrationDate) {
         this.id = id;

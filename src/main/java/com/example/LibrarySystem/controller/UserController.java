@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RestController
@@ -21,17 +22,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping
-//    public List<User> getAll(){
-//        return userService.getAllUser();
-//    }
 
+//Get User By Email
     @GetMapping("/email")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
+    public ResponseEntity<UserDTO> getUserByEmail(@RequestParam String email) {
         return userService.findUserEmail(email)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
     @PostMapping
     public ResponseEntity<UserDTO>createUser(@RequestBody UserRequest userRequest){

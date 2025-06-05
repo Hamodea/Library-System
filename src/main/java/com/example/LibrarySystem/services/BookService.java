@@ -42,13 +42,14 @@ public class BookService {
     }
 
 
-    // 🧭 Enkel pagination (utan filter)
-    public Page<Book> getAllBooks(Pageable pageable) {
+     // Enkel pagination (utan filter)
+    public Page<Book> getAllBooksWithoutFilter(Pageable pageable) {
         return bookRepository.findAll(pageable);
     }
 
-    // 🔍 Filtrering + pagination
+    //  Filtrering + pagination
     public Page<Book> getFilteredBooks(String title, Boolean available, Pageable pageable) {
         return bookRepository.findFilteredBooks(title, available, pageable);
     }
+
 }
