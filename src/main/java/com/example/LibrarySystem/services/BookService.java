@@ -2,6 +2,7 @@ package com.example.LibrarySystem.services;
 
 import com.example.LibrarySystem.entity.Book;
 import com.example.LibrarySystem.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,12 @@ public class BookService {
     //  Filtrering + pagination
     public Page<Book> getFilteredBooks(String title, Boolean available, Pageable pageable) {
         return bookRepository.findFilteredBooks(title, available, pageable);
+    }
+
+
+    @Transactional
+    public void deleteBookById(Long id) {
+        bookRepository.deleteBookByIdNative(id);
     }
 
 }

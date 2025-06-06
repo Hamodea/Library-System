@@ -100,5 +100,18 @@ public class BookController {
         return ResponseEntity.ok(result);
     }
 
+    // Delete Books
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBook(@PathVariable Long id) {
+        try {
+            bookService.deleteBookById(id);
+            return ResponseEntity.ok("Book deleted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body("Error deleting book: " + e.getMessage());
+        }
+    }
+
+
 
 }

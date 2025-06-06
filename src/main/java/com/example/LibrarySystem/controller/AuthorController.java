@@ -1,6 +1,5 @@
 package com.example.LibrarySystem.controller;
 
-import com.example.LibrarySystem.dto.AuthorBookDTO;
 import com.example.LibrarySystem.dto.AuthorRequest;
 import com.example.LibrarySystem.entity.Author;
 import com.example.LibrarySystem.services.AuthorService;
@@ -44,19 +43,6 @@ public class AuthorController {
 
     }
 
-    @GetMapping("/multi-book")
-    public ResponseEntity<List<AuthorBookDTO>> getAuthorsWithMultipleBooksAndTitles() {
-        List<Object[]> rows = authorService.findAuthorsWithMultipleBooksAndTitles();
-
-        List<AuthorBookDTO> dtos = rows.stream()
-                .map(row -> new AuthorBookDTO(
-                        (String) row[0],
-                        (String) row[1]
-                ))
-                .toList();
-
-        return ResponseEntity.ok(dtos);
-    }
 
 
 }

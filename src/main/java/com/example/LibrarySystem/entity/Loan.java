@@ -32,11 +32,6 @@ public class Loan {
     @Column(name = "returned_date")
     private LocalDateTime returnedDate;
 
-    @PrePersist
-    public void onCreate() {
-        this.borrowedDate = LocalDateTime.now();
-        this.dueDate = borrowedDate.plusWeeks(2); // t.ex. 14 dagar som standard
-    }
 
     public Loan(){}
 

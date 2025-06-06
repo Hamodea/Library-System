@@ -26,7 +26,4 @@ public class AuthorService {
     }
 
 
-    public List<Object[]> findAuthorsWithMultipleBooksAndTitles() {
-        return authorRepository.findAuthorsWithMultipleBooksAndTitles();
-    }
 }

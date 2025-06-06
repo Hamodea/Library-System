@@ -83,11 +83,6 @@ public class LoanController {
                     .body("User already has an active loan for this book."); // alt. skapa DTO för fel
         }
 
-        // 4. Kontrollera tillgängliga exemplar
-        if (book.getAvailableCopies() <= 0) {
-            throw new RuntimeException("Book is not available for loan.");
-        }
-
         // 5. Skapa nytt lån
         Loan loan = new Loan();
         loan.setUser(user);
