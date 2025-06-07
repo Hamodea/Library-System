@@ -31,6 +31,10 @@ public class BookController {
     private AuthorRepository authorRepository;
 
 
+    @GetMapping("/all")
+    public List<Book>getAllBook(){
+        return bookRepository.findAll();
+    }
     /**
      * GET /books/details
      * Returnerar en fullständig lista över alla böcker med detaljerad författarinformation.

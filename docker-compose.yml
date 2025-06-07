@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:17
+    container_name: library-postgres
+    environment:
+      POSTGRES_DB: library_System
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Mowa1996
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init:/docker-entrypoint-initdb.d
+
+  app:
+    image: librarysystem:latest
+    build:
+      context: .
+    container_name: library-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/library_System
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Mowa1996
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    restart: always
+
+volumes:
+  pgdata:
