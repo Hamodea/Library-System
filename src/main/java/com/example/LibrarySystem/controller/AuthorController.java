@@ -19,7 +19,7 @@ public class AuthorController {
     @GetMapping
     public ResponseEntity<List<Author>> getAll() {
         List<Author> authors = authorService.getAllAuthor();
-        return ResponseEntity.ok(authors); // 200 OK, även om listan är tom
+        return ResponseEntity.ok(authors);
     }
 
 

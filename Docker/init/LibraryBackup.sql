@@ -283,7 +283,7 @@ COPY public.books (book_id, title, publication_year, available_copies, total_cop
 10	The Moomins and the Great Flood	1945	2	2	10
 11	Murder on the Orient Express	1934	1	2	11
 12	The Adventure of Sherlock Holmes	1892	2	3	12
-13	Harry Potter and the Philosopher's Stone	1997	0	2	13
+13	Harry Potter and the Philosopher''s Stone	1997	0	2	13
 14	1984	1949	1	2	14
 15	Pride and Prejudice	1813	2	2	15
 16	Great Expectations	1861	1	2	16
@@ -314,7 +314,7 @@ COPY public.books (book_id, title, publication_year, available_copies, total_cop
 41	The Girl Who Played with Fire	2006	1	1	2
 42	The Preacher	2004	1	1	3
 43	The White Lioness	1993	1	1	4
-44	Gösta Berling's Saga	1891	1	1	5
+44	Gösta Berling''s Saga	1891	1	1	5
 45	Miss Julie	1888	1	1	6
 46	The Dwarf	1944	1	1	7
 47	The Last Letter	1959	1	1	8
@@ -325,14 +325,7 @@ COPY public.books (book_id, title, publication_year, available_copies, total_cop
 6	The Red Room	1879	0	2	6
 5	The Wonderful Adventures of Nils	1906	3	3	5
 2	The Girl with the Dragon Tattoo	2005	0	2	2
-52	Integration Book	0	0	1	\N
-53	Integration Book	0	0	1	\N
-54	Integration Book	0	0	1	\N
-55	Integration Book	0	0	1	\N
-56	Integration Book	0	0	1	\N
 \.
-
-
 --
 -- TOC entry 4928 (class 0 OID 16889)
 -- Dependencies: 223
