@@ -46,26 +46,32 @@ public class LoanController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<LoanSummaryDTO>> getUserLoanSummary(@PathVariable Long userId) {
+        // Hämta alla lån för användaren
         List<Loan> loans = loanRepository.findByUserId(userId);
 
         if (loans.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        List<LoanSummaryDTO> summaries = loans.stream().map(loan -> {
-            String fullName = loan.getUser().getFirstName() + " " + loan.getUser().getLastName();
-            return new LoanSummaryDTO(
-                    loan.getId(),
-                    loan.getBook().getTitle(),
-                    loan.getBorrowedDate(),
-                    loan.getDueDate(),
-                    loan.getReturnedDate(),
-                    fullName
-            );
-        }).toList();
+        // Filtrera bort lån som har ett returnedDate (dvs. redan returnerade)
+        List<LoanSummaryDTO> summaries = loans.stream()
+                .filter(loan -> loan.getReturnedDate() == null) // <--- Endast aktiva lån
+                .map(loan -> {
+                    String fullName = loan.getUser().getFirstName() + " " + loan.getUser().getLastName();
+                    return new LoanSummaryDTO(
+                            loan.getId(),
+                            loan.getBook().getTitle(),
+                            loan.getBorrowedDate(),
+                            loan.getDueDate(),
+                            loan.getReturnedDate(),
+                            fullName
+                    );
+                })
+                .toList();
 
         return ResponseEntity.ok(summaries);
     }
+
     @PostMapping
     public ResponseEntity<?> loanBook(@RequestBody LoanRequest loanRequest) {
         // 1. Hämta user
